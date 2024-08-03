@@ -63,11 +63,6 @@ return {
   },
   {
     'typescript-tools.nvim',
-    -- dependencies = {
-    --   'nvim-lua/plenary.nvim',
-    --   'neovim/nvim-lspconfig',
-    --   'davidosomething/format-ts-errors.nvim',
-    -- },
     after = function()
       require('typescript-tools').setup {
         handlers = {

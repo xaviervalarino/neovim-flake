@@ -16,6 +16,7 @@ return {
   {
     'mini.diff',
     enabled = not vim.g.vscode,
+    event = 'DeferredUIEnter',
     after = function()
       local diff = require 'mini.diff'
       diff.setup {
@@ -26,12 +27,14 @@ return {
   },
   {
     'mini.ai',
+    event = 'DeferredUIEnter',
     after = function()
       require('mini.ai').setup()
     end,
   },
   {
     'mini.git',
+    event = 'DeferredUIEnter',
     enabled = not vim.g.vscode,
     after = function()
       require('mini.git').setup()
@@ -40,6 +43,7 @@ return {
 
   {
     'mini.animate',
+    event = 'DeferredUIEnter',
     enabled = not vim.g.vscode,
     after = function()
       -- don't use animate when scrolling with the mouse
@@ -73,19 +77,17 @@ return {
       }
     end,
   },
-
   { 'mini.icons' },
   {
     'oil-nvim',
-    opts = {},
     enabled = not vim.g.vscode,
     -- dependencies = { 'echasnovski/mini.icons' },
-    before = function()
-      require('mini.icons').setup {}
-    end,
     keys = {
       { '-', '<cmd>Oil<cr>', { desc = 'Open parent directory' } },
     },
+    before = function()
+      require('mini.icons').setup {}
+    end,
     after = function()
       require('oil').setup()
     end,
@@ -93,6 +95,7 @@ return {
   {
     'mini.clue',
     enabled = not vim.g.vscode,
+    event = 'DeferredUIEnter',
     after = function()
       local miniclue = require 'mini.clue'
       miniclue.setup {
@@ -140,6 +143,7 @@ return {
   },
   {
     'mini.pairs',
+    event = 'InsertEnter',
     after = function()
       require('mini.pairs').setup {}
     end,
@@ -147,6 +151,7 @@ return {
   {
 
     'mini.surround',
+    event = 'DeferredUIEnter',
     after = function()
       require('mini.surround').setup {
         n_lines = 200,
@@ -156,6 +161,7 @@ return {
   {
     'mini.indentscope',
     enabled = not vim.g.vscode,
+    event = 'DeferredUIEnter',
     after = function()
       require('mini.indentscope').setup {
         draw = {
@@ -170,8 +176,8 @@ return {
   },
   {
     'rose-pine',
-    colorscheme = { 'rose-pine', 'rose-pine-main', 'rose-pine-moon', 'rose-pine-dawn' },
     enabled = not vim.g.vscode,
+    colorscheme = { 'rose-pine', 'rose-pine-main', 'rose-pine-moon', 'rose-pine-dawn' },
     after = function()
       require('rose-pine').setup {}
       -- vim.cmd 'colorscheme rose-pine'
@@ -209,12 +215,15 @@ return {
   },
   {
     'harpoon2',
-    -- dependencies = { 'nvim-lua/plenary.nvim' },
     enabled = not vim.g.vscode,
     keys = {
-      -- { '<leader>a', function()
-      --   require('harpoon'):list():add()
-      -- end, { desc = 'Harpoon: [a]dd file to list' }},
+      {
+        '<leader>a',
+        function()
+          require('harpoon'):list():add()
+        end,
+        { desc = 'harpoon: [a]dd file to list' },
+      },
       {
         '<C-e>',
         function()
@@ -291,6 +300,7 @@ return {
   },
   {
     'mini.completion',
+    event = 'DeferredUIEnter',
     enabled = not vim.g.vscode,
     after = function()
       require('mini.completion').setup()
@@ -307,6 +317,7 @@ return {
   },
   {
     'mini.comment',
+    event = 'DeferredUIEnter',
     after = function()
       require('mini.comment').setup {
         options = {
