@@ -9,10 +9,8 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 return {
   {
     'nvim-lspconfig',
-    event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
+    -- event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
     after = function()
-      print 'attaching lspconfig'
-
       local lspconfig = require 'lspconfig'
       lspconfig.eslint.setup {
         settings = {
@@ -57,12 +55,14 @@ return {
   },
   {
     'twoslash-queries',
+    ft = { 'typescript', 'typescriptreact' },
     after = function()
       require('twoslash-queries').setup { multi_line = true }
     end,
   },
   {
     'typescript-tools.nvim',
+    ft = { 'typescript', 'typescriptreact' },
     after = function()
       require('typescript-tools').setup {
         handlers = {

@@ -1,8 +1,7 @@
 return {
-  -- has to be a barrel file because lz.n doesn't read the symlinks from Nix
-  require 'plugins.lsp',
   {
     'nvim-treesitter',
+    event = 'VimEnter',
     after = function()
       local configs = require 'nvim-treesitter.configs'
       configs.setup {
@@ -23,6 +22,16 @@ return {
         view = { style = 'sign' },
       }
       vim.keymap.set('n', 'dh', diff.toggle_overlay, { desc = 'Toggle [d]iff [h]unks' })
+    end,
+  },
+  {
+    'diffview.nvim',
+    enabled = not vim.g.vscode,
+    event = 'DeferredUIEnter',
+    after = function()
+      require('mini.icons').setup()
+      MiniIcons.mock_nvim_web_devicons()
+      require('diffview').setup()
     end,
   },
   {
@@ -79,16 +88,15 @@ return {
   },
   { 'mini.icons' },
   {
-    'oil-nvim',
+    'oil.nvim',
     enabled = not vim.g.vscode,
-    -- dependencies = { 'echasnovski/mini.icons' },
     keys = {
       { '-', '<cmd>Oil<cr>', { desc = 'Open parent directory' } },
     },
     before = function()
       require('mini.icons').setup {}
     end,
-    after = function()
+    after = function(name)
       require('oil').setup()
     end,
   },
@@ -174,16 +182,22 @@ return {
       }
     end,
   },
-  {
-    'rose-pine',
-    enabled = not vim.g.vscode,
-    colorscheme = { 'rose-pine', 'rose-pine-main', 'rose-pine-moon', 'rose-pine-dawn' },
-    after = function()
-      require('rose-pine').setup {}
-      -- vim.cmd 'colorscheme rose-pine'
-      -- vim.cmd 'colorscheme rose-pine-moon'
-    end,
-  },
+  -- {
+  --   'rose-pine',
+  --   enabled = not vim.g.vscode,
+  --   colorscheme = { 'rose-pine', 'rose-pine-main', 'rose-pine-moon', 'rose-pine-dawn' },
+  --   before = function()
+  --     vim.cmd.packadd 'rose-pine'
+  --   end,
+  --   -- load = function(name)
+  --   --   vim.cmd.packadd(name)
+  --   -- end,
+  --   after = function()
+  --     require('rose-pine').setup {}
+  --     -- vim.cmd 'colorscheme rose-pine'
+  --     -- vim.cmd 'colorscheme rose-pine-moon'
+  --   end,
+  -- },
   {
     'conform.nvim',
     enabled = not vim.g.vscode,
@@ -306,15 +320,15 @@ return {
       require('mini.completion').setup()
     end,
   },
-  {
-    'nvim-ts-context-commentstring',
-    -- enabled = not vim.g.vscode,
-    after = function()
-      require('ts_context_commentstring').setup {
-        enable_autocmd = false,
-      }
-    end,
-  },
+  -- {
+  --   'nvim-ts-context-commentstring',
+  --   -- enabled = not vim.g.vscode,
+  --   after = function()
+  --     require('ts_context_commentstring').setup {
+  --       enable_autocmd = false,
+  --     }
+  --   end,
+  -- },
   {
     'mini.comment',
     event = 'DeferredUIEnter',

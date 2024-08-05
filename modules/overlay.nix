@@ -26,7 +26,18 @@ with final.pkgs.lib; let
   #   ...
   # }
   all-plugins = with pkgs.vimPlugins; [
-    nvim-treesitter.withAllGrammars
+    {
+      plugin = nvim-treesitter.withAllGrammars;
+      optional = false;
+    }
+    {
+      plugin = lz-n;
+      optional = false;
+    }
+    {
+      plugin = rose-pine;
+      optional = false;
+    }
     # mini-nvim
     nvim-lspconfig
     lazydev-nvim
@@ -40,14 +51,13 @@ with final.pkgs.lib; let
     nvim-ts-context-commentstring
     vim-repeat
     yanky-nvim
-    rose-pine
     conform-nvim
     oil-nvim
     zen-mode-nvim
     twilight-nvim
     harpoon2
 
-    (mkNvimPlugin inputs.lz-n "lz.n")
+    # (mkNvimPlugin inputs.rose-pine "rose-pine")
     (mkNvimPlugin inputs.twoslash-queries "twoslash-queries")
     (mkNvimPlugin inputs.format-ts-errors "format-ts-errors")
     (mkNvimPlugin inputs.mini-ai "mini.ai")

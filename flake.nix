@@ -8,9 +8,6 @@
 
     # Add bleeding-edge plugins here.
     # They can be updated with `nix flake update` (make sure to commit the generated flake.lock)
-    lz-n.url = "github:nvim-neorocks/lz.n";
-    lz-n.inputs.nixpkgs.follows = "nixpkgs";
-
     twoslash-queries.url = "github:marilari88/twoslash-queries.nvim";
     twoslash-queries.flake = false;
 
