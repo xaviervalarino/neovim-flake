@@ -44,6 +44,7 @@ return {
           },
         },
       }
+      lspconfig.nil_ls.setup {}
     end,
   },
   {
