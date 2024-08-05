@@ -4,6 +4,7 @@ return {
   -- because Nix is using a symlink for the files
   require 'plugins.lsp',
   require 'plugins.telescope',
+
   {
     'nvim-treesitter',
     event = 'DeferredUIEnter',
@@ -44,27 +45,28 @@ return {
   },
   {
     'mini.ai',
-    event = 'DeferredUIEnter',
+    keys = { 'a', 'i' },
     after = function()
       require('mini.ai').setup()
     end,
   },
   {
+    -- TODO: `MiniGit` doesn't get assinged to the global object
     'mini.git',
-    event = 'DeferredUIEnter',
     enabled = not vim.g.vscode,
+    event = 'CmdlineEnter',
     after = function()
       require('mini.git').setup()
     end,
   },
-
   {
     'mini.animate',
-    event = 'DeferredUIEnter',
     enabled = not vim.g.vscode,
+    event = 'CursorMoved',
     after = function()
       -- don't use animate when scrolling with the mouse
       local mouse_scrolled = false
+
       for _, scroll in ipairs { 'Up', 'Down' } do
         local key = '<ScrollWheel' .. scroll .. '>'
         vim.keymap.set({ '', 'i' }, key, function()
@@ -116,7 +118,17 @@ return {
   {
     'mini.clue',
     enabled = not vim.g.vscode,
-    event = 'DeferredUIEnter',
+    keys = {
+      { '<leader>', mode = { 'n', 'x' } },
+      { '<C-x>', mode = { 'n', 'x' } },
+      { 'g', mode = { 'n', 'x' } },
+      { "'", mode = { 'n', 'x' } },
+      { '`', mode = { 'n', 'x' } },
+      { '"', mode = { 'n', 'x' } },
+      { '<C-r>', mode = { 'n', 'x' } },
+      '<C-w>',
+      { 'z', mode = { 'n', 'x' } },
+    },
     after = function()
       local miniclue = require 'mini.clue'
       miniclue.setup {
@@ -172,7 +184,11 @@ return {
   {
 
     'mini.surround',
-    event = 'DeferredUIEnter',
+    keys = {
+      { 'sr', mode = { 'n', 'x' } },
+      { 'sa', mode = { 'n', 'x' } },
+      { 'sd', mode = { 'n', 'x' } },
+    },
     after = function()
       require('mini.surround').setup {
         n_lines = 200,
@@ -182,7 +198,7 @@ return {
   {
     'mini.indentscope',
     enabled = not vim.g.vscode,
-    event = 'DeferredUIEnter',
+    event = 'CursorMoved',
     after = function()
       require('mini.indentscope').setup {
         draw = {
@@ -198,8 +214,8 @@ return {
   {
     'conform.nvim',
     enabled = not vim.g.vscode,
-    event = { 'BufWritePre' },
-    cmd = { 'ConformInfo' },
+    event = 'BufWritePre',
+    cmd = 'ConformInfo',
     after = function()
       require('conform').setup {
         format_on_save = {
@@ -228,78 +244,64 @@ return {
     'harpoon2',
     enabled = not vim.g.vscode,
     keys = {
-      {
-        '<leader>a',
-        function()
-          require('harpoon'):list():add()
-        end,
-        { desc = 'harpoon: [a]dd file to list' },
-      },
-      {
-        '<C-e>',
-        function()
-          require('harpoon').ui:toggle_quick_menu(require('harpoon'):list())
-        end,
-        { desc = 'harpoon: show list' },
-      },
-      {
-        '<C-h>',
-        function()
-          require('harpoon'):list():select(1)
-        end,
-        { desc = 'harpoon: Go to to 1st item' },
-      },
-      {
-        '<C-j>',
-        function()
-          require('harpoon'):list():select(2)
-        end,
-        { desc = 'harpoon: Go to to 2nd item' },
-      },
-      {
-        '<C-k>',
-        function()
-          require('harpoon'):list():select(3)
-        end,
-        { desc = 'harpoon: Go to to 3rd item' },
-      },
-      {
-        '<C-l>',
-        function()
-          require('harpoon'):list():select(4)
-        end,
-        { desc = 'harpoon: Go to to 4th item' },
-      },
-      {
-        '<leader>p',
-        function()
-          require('harpoon'):list():prev()
-        end,
-        { desc = 'harpoon: go to [p]rev file' },
-      },
-      {
-        '<leader>n',
-        function()
-          require('harpoon'):list():next()
-        end,
-        { desc = 'harpoon: go to [n]ext file' },
-      },
+      '<leader>a',
+      '<C-e>',
+      '<C-h>',
+      '<C-j>',
+      '<C-k>',
+      '<C-l>',
+      '<leader>p',
+      '<leader>n',
     },
     after = function()
-      require('harpoon').setup {}
+      local harpoon = require 'harpoon'
+      harpoon.setup {}
+
+      vim.keymap.set('n', '<leader>a', function()
+        harpoon:list():add()
+      end, { desc = 'harpoon: [a]dd file to list' })
+
+      vim.keymap.set('n', '<C-e>', function()
+        harpoon.ui:toggle_quick_menu(harpoon:list())
+      end, { desc = 'harpoon: show list' })
+
+      vim.keymap.set('n', '<C-h>', function()
+        harpoon:list():select(1)
+      end, { desc = 'harpoon: Go to to 1st item' })
+
+      vim.keymap.set('n', '<C-j>', function()
+        harpoon:list():select(2)
+      end, { desc = 'harpoon: Go to to 2nd item' })
+
+      vim.keymap.set('n', '<C-k>', function()
+        harpoon:list():select(3)
+      end, { desc = 'harpoon: Go to to 3rd item' })
+
+      vim.keymap.set('n', '<C-l>', function()
+        harpoon:list():select(4)
+      end, { desc = 'harpoon: Go to to 4th item' })
+
+      vim.keymap.set('n', '<leader>p', function()
+        harpoon:list():prev()
+      end, { desc = 'harpoon: go to [p]rev file' })
+
+      vim.keymap.set('n', '<leader>n', function()
+        harpoon:list():next()
+      end, { desc = 'harpoon: go to [n]ext file' })
     end,
   },
   {
     'yanky.nvim',
     enabled = not vim.g.vscode,
     keys = {
-      { 'p', '<Plug>(YankyPutAfter)', mode = { 'n', 'x' } },
-      { 'P', '<Plug>(YankyPutBefore)', mode = { 'n', 'x' } },
-      { 'gp', '<Plug>(YankyGPutAfter)', mode = { 'n', 'x' } },
-      { 'gP', '<Plug>(YankyGPutBefore)', mode = { 'n', 'x' } },
-
-      { '<c-p>', '<Plug>(YankyPreviousEntry)' },
-      { '<c-n>', '<Plug>(YankyNextEntry)' },
+      { 'y', mode = { 'n', 'x' } },
+      { 'Y', mode = { 'n', 'x' } },
+      { 'p', mode = { 'n', 'x' } },
+      { 'P', mode = { 'n', 'x' } },
+      { 'gp', mode = { 'n', 'x' } },
+      { 'gP', mode = { 'n', 'x' } },
+      '<c-p>',
+      '<c-n>',
     },
     after = function()
       require('yanky').setup {
@@ -307,11 +309,17 @@ return {
           timer = 100,
         },
       }
+      vim.keymap.set({ 'n', 'x' }, 'P', '<Plug>(YankyPutBefore)')
+      vim.keymap.set({ 'n', 'x' }, 'gp', '<Plug>(YankyGPutAfter)')
+      vim.keymap.set({ 'n', 'x' }, 'gP', '<Plug>(YankyGPutBefore)')
+
+      vim.keymap.set('n', '<c-p>', '<Plug>(YankyPreviousEntry)')
+      vim.keymap.set('n', '<c-n>', '<Plug>(YankyNextEntry)')
     end,
   },
   {
     'mini.completion',
-    event = 'DeferredUIEnter',
+    event = 'InsertEnter',
     enabled = not vim.g.vscode,
     after = function()
       require('mini.completion').setup()
@@ -319,7 +327,7 @@ return {
   },
   {
     'mini.comment',
-    event = 'DeferredUIEnter',
+    key = { 'gc', mode = { 'n', 'x' } },
     after = function()
       require('mini.comment').setup {
         options = {
@@ -333,16 +341,13 @@ return {
   {
     'zen-mode.nvim',
     cmd = 'ZenMode',
-    keys = { { '<leader>z', '<cmd>ZenMode<cr>', desc = 'Zen Mode' } },
-    load = function(name)
-      vim.cmd.packadd(name)
-      vim.cmd.packadd 'twilight.nvim'
-    end,
+    keys = '<leader>z',
     after = function()
       require('zen-mode').setup {
         window = { backdrop = 0.7 },
         plugins = {},
       }
+      vim.keymap.set('n', '<leader>z', '<cmd>ZenMode<cr>', { desc = 'Zen Mode' })
     end,
   },
 }
