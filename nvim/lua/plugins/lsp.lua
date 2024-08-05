@@ -9,7 +9,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 return {
   {
     'nvim-lspconfig',
-    -- event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
+    event = { 'BufReadPost', 'BufWritePost', 'BufNewFile' },
     after = function()
       local lspconfig = require 'lspconfig'
       lspconfig.eslint.setup {

@@ -1,7 +1,12 @@
 return {
+  -- Using this as a barrel file
+  -- lz.n doesn't seem to be picking up other plugin specs
+  -- because Nix is using a symlink for the files
+  require 'plugins.lsp',
+  require 'plugins.telescope',
   {
     'nvim-treesitter',
-    event = 'VimEnter',
+    event = 'DeferredUIEnter',
     after = function()
       local configs = require 'nvim-treesitter.configs'
       configs.setup {
@@ -27,10 +32,13 @@ return {
   {
     'diffview.nvim',
     enabled = not vim.g.vscode,
-    event = 'DeferredUIEnter',
+    cmd = {
+      'DiffviewOpen',
+      'DiffviewFileHistory',
+      'DiffviewFocusFiles',
+      'DiffviewLog',
+    },
     after = function()
-      require('mini.icons').setup()
-      MiniIcons.mock_nvim_web_devicons()
       require('diffview').setup()
     end,
   },
@@ -86,17 +94,22 @@ return {
       }
     end,
   },
-  { 'mini.icons' },
+  {
+    'mini.icons',
+    enabled = not vim.g.vscode,
+    event = 'DeferredUIEnter',
+    after = function()
+      require('mini.icons').setup()
+      MiniIcons.mock_nvim_web_devicons()
+    end,
+  },
   {
     'oil.nvim',
     enabled = not vim.g.vscode,
     keys = {
       { '-', '<cmd>Oil<cr>', { desc = 'Open parent directory' } },
     },
-    before = function()
-      require('mini.icons').setup {}
-    end,
-    after = function(name)
+    after = function()
       require('oil').setup()
     end,
   },
@@ -182,26 +195,10 @@ return {
       }
     end,
   },
-  -- {
-  --   'rose-pine',
-  --   enabled = not vim.g.vscode,
-  --   colorscheme = { 'rose-pine', 'rose-pine-main', 'rose-pine-moon', 'rose-pine-dawn' },
-  --   before = function()
-  --     vim.cmd.packadd 'rose-pine'
-  --   end,
-  --   -- load = function(name)
-  --   --   vim.cmd.packadd(name)
-  --   -- end,
-  --   after = function()
-  --     require('rose-pine').setup {}
-  --     -- vim.cmd 'colorscheme rose-pine'
-  --     -- vim.cmd 'colorscheme rose-pine-moon'
-  --   end,
-  -- },
   {
     'conform.nvim',
     enabled = not vim.g.vscode,
-    event = { 'BufWritePre ' },
+    event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
     after = function()
       require('conform').setup {
@@ -320,15 +317,6 @@ return {
       require('mini.completion').setup()
     end,
   },
-  -- {
-  --   'nvim-ts-context-commentstring',
-  --   -- enabled = not vim.g.vscode,
-  --   after = function()
-  --     require('ts_context_commentstring').setup {
-  --       enable_autocmd = false,
-  --     }
-  --   end,
-  -- },
   {
     'mini.comment',
     event = 'DeferredUIEnter',
@@ -342,11 +330,14 @@ return {
       }
     end,
   },
-  { 'twilight.nvim' },
   {
     'zen-mode.nvim',
     cmd = 'ZenMode',
     keys = { { '<leader>z', '<cmd>ZenMode<cr>', desc = 'Zen Mode' } },
+    load = function(name)
+      vim.cmd.packadd(name)
+      vim.cmd.packadd 'twilight.nvim'
+    end,
     after = function()
       require('zen-mode').setup {
         window = { backdrop = 0.7 },
