@@ -56,6 +56,7 @@ with final.pkgs.lib; let
     zen-mode-nvim
     twilight-nvim
     harpoon2
+   vim-startuptime
 
     # (mkNvimPlugin inputs.rose-pine "rose-pine")
     (mkNvimPlugin inputs.twoslash-queries "twoslash-queries")

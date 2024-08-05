@@ -350,4 +350,11 @@ return {
       vim.keymap.set('n', '<leader>z', '<cmd>ZenMode<cr>', { desc = 'Zen Mode' })
     end,
   },
+  {
+    'vim-startuptime',
+    event = 'DeferredUIEnter',
+    before = function()
+      vim.g.startuptime_tries = 10
+    end,
+  },
 }
