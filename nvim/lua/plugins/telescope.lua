@@ -1,7 +1,20 @@
 return {
   'telescope.nvim',
   enabled = not vim.g.vscode,
-  event = { 'DeferredUIEnter' },
+  cmd = 'Telescope',
+  keys = {
+    '<leader>S',
+    '<leader>sh',
+    '<leader>sk',
+    '<leader>sf',
+    '<leader>ss',
+    '<leader>sw',
+    '<leader>sg',
+    '<leader>sd',
+    '<leader>sR',
+    '<leader>s.',
+    '<leader><leader>',
+  },
   -- dependencies = {
   --   'nvim-lua/plenary.nvim',
   --   { -- If encountering errors, see telescope-fzf-native README for installation instructions

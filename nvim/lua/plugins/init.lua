@@ -328,6 +328,11 @@ return {
   {
     'mini.comment',
     key = { 'gc', mode = { 'n', 'x' } },
+    before = function()
+      require('ts_context_commentstring').setup {
+        enable_autocmd = false,
+      }
+    end,
     after = function()
       require('mini.comment').setup {
         options = {

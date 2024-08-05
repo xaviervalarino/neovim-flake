@@ -49,16 +49,9 @@ return {
   },
   {
     'lazydev.nvim',
-    ft = 'lua', -- only load on lua file
+    ft = 'lua',
     after = function()
       require('lazydev').setup {}
-    end,
-  },
-  {
-    'twoslash-queries',
-    ft = { 'typescript', 'typescriptreact' },
-    after = function()
-      require('twoslash-queries').setup { multi_line = true }
     end,
   },
   {
