@@ -27,10 +27,6 @@ with final.pkgs.lib; let
   # }
   all-plugins = with pkgs.vimPlugins; [
     {
-      plugin = nvim-treesitter.withAllGrammars;
-      optional = false;
-    }
-    {
       plugin = lz-n;
       optional = false;
     }
@@ -39,6 +35,7 @@ with final.pkgs.lib; let
       optional = false;
     }
     # mini-nvim
+    nvim-treesitter.withAllGrammars
     nvim-lspconfig
     lazydev-nvim
     typescript-tools-nvim
